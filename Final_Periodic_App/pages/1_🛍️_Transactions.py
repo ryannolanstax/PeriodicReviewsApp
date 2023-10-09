@@ -283,14 +283,39 @@ def download_df():
         dup['totalmins'] = dup['created_at_time'].str.split(pat=":", expand=True)[0].astype(float) * 60 + dup['created_at_time'].str.split(pat=":", expand=True)[1].astype(float)
         dup['totalminsprev'] = dup['totalmins'].shift(-1)
         dup['totalminsnext'] = dup['totalmins'].shift(1)
-        dup2 = dup.query('created_at_day == created_at_daynext | created_at_day == created_at_dayprev')
-        dup3 = dup2.query('totalmins < totalminsprev + 60 | totalmins > totalminsnext - 60')
-        dup4 = dup3.query('payment_person_name == payment_person_name_next | \
-                payment_person_name == payment_person_name_prev | \
-                payment_last_four == payment_last_four_next | \
-                payment_last_four == payment_last_four_prev')      
+       # dup2 = dup.query('created_at_day == created_at_daynext | created_at_day == created_at_dayprev')
+       # dup3 = dup2.query('totalmins < totalminsprev + 60 | totalmins > totalminsnext - 60')
+       # dup4 = dup3.query('payment_person_name == payment_person_name_next | \
+       #         payment_person_name == payment_person_name_prev | \
+       #         payment_last_four == payment_last_four_next | \
+       #         payment_last_four == payment_last_four_prev') 
 
-        dup4['total'] = dup4['total'].apply('${:,.0f}'.format)
+        dup4 = dup.query('(created_at_day == created_at_daynext | created_at_day == created_at_dayprev) &\
+                  (totalmins < totalminsprev + 60 | totalmins > totalminsnext - 60) & \
+                  (payment_person_name == payment_person_name_next | \
+                    payment_person_name == payment_person_name_prev | \
+                    payment_last_four == payment_last_four_next | \
+                    payment_last_four == payment_last_four_prev) ')   
+        dup4['nexttotal'] = dup['total'].shift(-1)
+        dup4['prevtotal'] = dup['total'].shift(1)  
+
+        def splitpaymentsname(row):
+            if row['payment_person_name'] == row['payment_person_name_next']:
+                return row['prevtotal'] + row['total']
+            elif row['payment_person_name'] == row['payment_person_name_prev']:
+                return row['nexttotal'] + row['total']
+            elif row['payment_last_four'] == row['payment_last_four_next']:
+                return row['prevtotal'] + row['total']
+            elif row['payment_last_four'] == row['payment_last_four_prev']:
+                return row['nexttotal'] + row['total']
+            else:
+                return row['total']
+
+        dup4['totalAll'] = dup4.apply(splitpaymentsname, axis=1)
+
+        dup5 = dup4[dup4['totalAll'] >= highticketval]
+
+        dup5['total'] = dup5['total'].apply('${:,.0f}'.format)
         namefinal['total'] = namefinal['total'].apply('${:,.0f}'.format)
         highticket['total'] = highticket['total'].apply('${:,.0f}'.format)
         df['total'] = df['total'].apply('${:,.0f}'.format)
@@ -303,7 +328,7 @@ def download_df():
             "Flagged_Payment_Notes": payment_note_final,
             "Flagged_Names": namefinal3,
             "Chanel_Pivot": pivottablechannel,
-            "Dup_Trans": dup4,
+            "Dup_Trans": dup5,
             "Names_Pivot": pivottablenames,
             "Last_Four_Pivot": pivottablelastfour,
 
