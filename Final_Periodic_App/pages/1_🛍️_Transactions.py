@@ -351,13 +351,13 @@ if __name__ == "__main__":
         lastname1 = st.text_input("Enter Owner Last Name 1", key="lastname1")
 
         firstname2 = st.text_input("Enter Owner First Name 2", key="firstname2")
-        lastname2 = st.text_input("Enter Owner First Name 2", key="lastname2")
+        lastname2 = st.text_input("Enter Owner Last Name 2", key="lastname2")
 
         firstname3 = st.text_input("Enter Owner First Name 3", key="firstname3")
-        lastname3 = st.text_input("Enter Owner First Name 3", key="lastname3")
+        lastname3 = st.text_input("Enter Owner Last Name 3", key="lastname3")
 
         firstname4 = st.text_input("Enter Owner First Name 4", key="firstname4")
-        lastname4 = st.text_input("Enter Owner First Name 4", key="lastname4")
+        lastname4 = st.text_input("Enter Owner Last Name 4", key="lastname4")
 
         highticketstring = st.number_input("Enter High Ticket INTEGER ONLY", key="highticket")
 
