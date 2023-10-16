@@ -300,47 +300,47 @@ def download_df():
                             }, index=['Highest Transaction'])
         
         if volumePastMonth6 > 0: 
-            refundamountmonth6 = 100.00 * (refundPastMonth6 / volumePastMonth6)
+            refundamountmonth6 = (refundPastMonth6 / volumePastMonth6)
         else: 
             refundamountmonth6 = 0
 
         if volumePastMonth5 > 0: 
-            refundamountmonth5 = 100.00 * (refundPastMonth5 / volumePastMonth5)
+            refundamountmonth5 = (refundPastMonth5 / volumePastMonth5)
         else: 
             refundamountmonth5 = 0
 
         if volumePastMonth4 > 0: 
-            refundamountmonth4 = 100.00 * (refundPastMonth4 / volumePastMonth4)
+            refundamountmonth4 = (refundPastMonth4 / volumePastMonth4)
         else: 
             refundamountmonth4 = 0
 
         if volumePastMonth3 > 0: 
-            refundamountmonth3 = 100.00 * (refundPastMonth3 / volumePastMonth3)
+            refundamountmonth3 = (refundPastMonth3 / volumePastMonth3)
         else: 
             refundamountmonth3 = 0
 
         if volumePastMonth2 > 0: 
-            refundamountmonth2 = 100.00 * (refundPastMonth2 / volumePastMonth2)
+            refundamountmonth2 = (refundPastMonth2 / volumePastMonth2)
         else: 
             refundamountmonth2 = 0
 
         if volumePastMonth > 0: 
-            refundamountmonth = 100.00 * (refundPastMonth / volumePastMonth)
+            refundamountmonth = (refundPastMonth / volumePastMonth)
         else: 
             refundamountmonth = 0
 
         if volumeCurrentMonth > 0: 
-            refundamountcurrentmonth = 100.00 * (refundCurrentMonth / volumeCurrentMonth)
+            refundamountcurrentmonth = (refundCurrentMonth / volumeCurrentMonth)
         else: 
             refundamountcurrentmonth = 0
 
         if volume6monthtotal > 0: 
-            refundamount6month = 100.00 * (refundtotalPastMonth6 / volume6monthtotal)
+            refundamount6month = (refundtotalPastMonth6 / volume6monthtotal)
         else: 
             refundamount6month = 0
 
         if volumetotal > 0: 
-            refundamounttotal = 100.00 * (refundtotal / volumetotal)
+            refundamounttotal = (refundtotal / volumetotal)
         else: 
             refundamounttotal = 0
 
@@ -356,47 +356,47 @@ def download_df():
                        }, index=['Refund Amount Ratio'])
         
         if countPastMonth6 > 0: 
-            refundcountpercentmonth6 = 100.00 * (refundCountPastMonth6 / countPastMonth6)
+            refundcountpercentmonth6 = (refundCountPastMonth6 / countPastMonth6)
         else: 
             refundcountpercentmonth6 = 0
 
         if countPastMonth5 > 0: 
-            refundcountpercentmonth5 = 100.00 * (refundCountPastMonth5 / countPastMonth5)
+            refundcountpercentmonth5 = (refundCountPastMonth5 / countPastMonth5)
         else: 
             refundcountpercentmonth5 = 0
 
         if countPastMonth4 > 0: 
-            refundcountpercentmonth4 = 100.00 * (refundCountPastMonth4 / countPastMonth4)
+            refundcountpercentmonth4 = (refundCountPastMonth4 / countPastMonth4)
         else: 
             refundcountpercentmonth4 = 0
 
         if countPastMonth3 > 0: 
-            refundcountpercentmonth3 = 100.00 * (refundCountPastMonth3 / countPastMonth3)
+            refundcountpercentmonth3 = (refundCountPastMonth3 / countPastMonth3)
         else: 
             refundcountpercentmonth3 = 0
 
         if countPastMonth2 > 0: 
-            refundcountpercentmonth2 = 100.00 * (refundCountPastMonth2 / countPastMonth2)
+            refundcountpercentmonth2 = (refundCountPastMonth2 / countPastMonth2)
         else: 
             refundcountpercentmonth2 = 0
 
         if countPastMonth > 0: 
-            refundcountpercentmonth = 100.00 * (refundCountPastMonth / countPastMonth)
+            refundcountpercentmonth = (refundCountPastMonth / countPastMonth)
         else: 
             refundcountpercentmonth = 0
 
         if countCurrentMonth > 0: 
-            refundcountpercentcurrentmonth = 100.00 * (refundCountCurrentMonth / countCurrentMonth)
+            refundcountpercentcurrentmonth = (refundCountCurrentMonth / countCurrentMonth)
         else: 
             refundcountpercentcurrentmonth = 0
 
         if volume6monthtotal > 0: 
-            refundcountpercent6month = 100.00 * (refundCounttotalPastMonth6 / counttotalPastMonth6)
+            refundcountpercent6month = (refundCounttotalPastMonth6 / counttotalPastMonth6)
         else: 
             refundcountpercent6month = 0
 
         if volumecounttotal > 0: 
-            refundcountpercenttotal = 100.00 * (refundcounttotal / volumecounttotal)
+            refundcountpercenttotal = (refundcounttotal / volumecounttotal)
         else: 
             refundcountpercenttotal = 0
 
