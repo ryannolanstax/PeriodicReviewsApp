@@ -479,7 +479,7 @@ def download_df():
                              'Current Month To Date': '{:.2%}',
                              '6 month total':'{:.2%}'}
 
-        for key, value in format_mapping_dollars.items():
+        for key, value in format_mapping_percent.items():
             dfrefundamountpercent[key] = dfrefundamountpercent[key].apply(value.format)
             dfrefundpercentcount[key] = dfrefundpercentcount[key].apply(value.format)    
 
