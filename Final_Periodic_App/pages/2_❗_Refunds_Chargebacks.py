@@ -10,7 +10,6 @@ import io
 
 st.set_page_config(page_title="Refunds_Chargebacks", page_icon="❗")
 
-
 def download_button(objects_to_download, download_filename):
     """
     Generates a link to download the given objects_to_download as separate sheets in an Excel file.
@@ -140,8 +139,8 @@ def download_df():
                                     'Past Month 1':[volumePastMonth],
                                     'Current Month To Date':[volumeCurrentMonth],
                                     '6 month total':[volume6monthtotal],
-                                    'lifetime_total':[volumetotal]
-                            }, index=['Sales_Amount'])
+                            #        'lifetime_total':[volumetotal]
+                            }, index=['Sales Amount'])
 
         volumecounttotal = np.count_nonzero(volume['total'])
 
@@ -169,8 +168,8 @@ def download_df():
                                     'Past Month 1':[countPastMonth],
                                     'Current Month To Date':[countCurrentMonth],
                                     '6 month total':[counttotalPastMonth6],
-                                    'lifetime_total':[volumecounttotal]
-                            }, index=['Sales_Count'])
+                            #        'lifetime_total':[volumecounttotal]
+                            }, index=['Sales Count'])
 
         volume90 = np.sum(volume[volume['created_at'] > days90]['total'])
 
@@ -182,21 +181,21 @@ def download_df():
 
         refundtotal = np.sum(refund['total'])
 
-        refundCurrentMonth = np.sum(refund[refund['created_at'] >= CurrentMonth]['total'])
+        refundCurrentMonth = np.absolute(np.sum(refund[refund['created_at'] >= CurrentMonth]['total']))
 
-        refundPastMonth = np.sum(refund[refund['created_at'] >= PastMonth]['total']) - refundCurrentMonth
+        refundPastMonth = np.absolute(np.sum(refund[refund['created_at'] >= PastMonth]['total'])) - refundCurrentMonth
 
-        refundPastMonth2 = np.sum(refund[refund['created_at'] >= PastMonth2]['total']) - refundCurrentMonth - refundPastMonth
+        refundPastMonth2 = np.absolute(np.sum(refund[refund['created_at'] >= PastMonth2]['total'])) - refundCurrentMonth - refundPastMonth
 
-        refundPastMonth3 = np.sum(refund[refund['created_at'] >= PastMonth3]['total']) - refundCurrentMonth - refundPastMonth - refundPastMonth2
+        refundPastMonth3 = np.absolute(np.sum(refund[refund['created_at'] >= PastMonth3]['total'])) - refundCurrentMonth - refundPastMonth - refundPastMonth2
 
-        refundPastMonth4 = np.sum(refund[refund['created_at'] >= PastMonth4]['total']) - refundCurrentMonth - refundPastMonth - refundPastMonth2 - refundPastMonth3
+        refundPastMonth4 = np.absolute(np.sum(refund[refund['created_at'] >= PastMonth4]['total'])) - refundCurrentMonth - refundPastMonth - refundPastMonth2 - refundPastMonth3
 
-        refundPastMonth5 = np.sum(refund[refund['created_at'] >= PastMonth5]['total']) - refundCurrentMonth - refundPastMonth - refundPastMonth2 - refundPastMonth3 - refundPastMonth4
+        refundPastMonth5 = np.absolute(np.sum(refund[refund['created_at'] >= PastMonth5]['total'])) - refundCurrentMonth - refundPastMonth - refundPastMonth2 - refundPastMonth3 - refundPastMonth4
 
-        refundPastMonth6 = np.sum(refund[refund['created_at'] >= PastMonth6]['total']) - refundCurrentMonth - refundPastMonth - refundPastMonth2 - refundPastMonth3 - refundPastMonth4 - refundPastMonth5
+        refundPastMonth6 = np.absolute(np.sum(refund[refund['created_at'] >= PastMonth6]['total'])) - refundCurrentMonth - refundPastMonth - refundPastMonth2 - refundPastMonth3 - refundPastMonth4 - refundPastMonth5
 
-        refundtotalPastMonth6 = np.sum(refund[refund['created_at'] >= PastMonth6]['total'])
+        refundtotalPastMonth6 = np.absolute(np.sum(refund[refund['created_at'] >= PastMonth6]['total']))
 
         dfrefundamount = pd.DataFrame({'Past Month 6':[refundPastMonth6],
                                     'Past Month 5':[refundPastMonth5],
@@ -206,8 +205,8 @@ def download_df():
                                     'Past Month 1':[refundPastMonth],
                                     'Current Month To Date':[refundCurrentMonth],
                                     '6 month total':[refundtotalPastMonth6],
-                                    'lifetime_total':[refundtotal]
-                            }, index=['Refund_Amount'])
+                            #        'lifetime_total':[refundtotal]
+                            }, index=['Refund Amount'])
 
         refundcounttotal = np.count_nonzero(refund['total'])
 
@@ -235,8 +234,8 @@ def download_df():
                                     'Past Month 1':[refundCountPastMonth],
                                     'Current Month To Date':[refundCountCurrentMonth],
                                     '6 month total':[refundCounttotalPastMonth6],
-                                    'lifetime_total':[refundcounttotal]
-                            }, index=['Refund_Count'])
+                            #        'lifetime_total':[refundcounttotal]
+                            }, index=['Refund Count'])
 
         #Average Ticket
 
@@ -266,8 +265,8 @@ def download_df():
                                     'Past Month 1':[avgPastMonth],
                                     'Current Month To Date':[avgCurrentMonth],
                                     '6 month total':[avgcounttotal],
-                                    'lifetime_total':[avgtotalPastMonth6]
-                            }, index=['Average_Ticket'])
+                            #        'lifetime_total':[avgtotalPastMonth6]
+                            }, index=['Average Ticket'])
 
         #add in high ticket
 
@@ -297,8 +296,8 @@ def download_df():
                                     'Past Month 1':[highesttranPastMonth],
                                     'Current Month To Date':[highesttranCurrentMonth],
                                     '6 month total':[highesttrantotalPastMonth6],
-                                    'lifetime_total':[highesttran]
-                            }, index=['Highest_Transactions'])
+                            #        'lifetime_total':[highesttran]
+                            }, index=['Highest Transaction'])
         
         if volumePastMonth6 > 0: 
             refundamountmonth6 = 100.00 * (refundPastMonth6 / volumePastMonth6)
@@ -353,8 +352,8 @@ def download_df():
                              'Past Month 1':[refundamountmonth],
                              'Current Month To Date':[refundamountcurrentmonth],
                              '6 month total':[refundamount6month],
-                             'lifetime_total':[refundamounttotal]
-                       }, index=['Refund_Amount_Ratio'])
+                       #      'lifetime_total':[refundamounttotal]
+                       }, index=['Refund Amount Ratio'])
         
         if countPastMonth6 > 0: 
             refundcountpercentmonth6 = 100.00 * (refundCountPastMonth6 / countPastMonth6)
@@ -409,12 +408,82 @@ def download_df():
                              'Past Month 1':[refundcountpercentmonth],
                              'Current Month To Date':[refundcountpercentcurrentmonth],
                              '6 month total':[refundcountpercent6month],
-                             'lifetime_total':[refundcountpercenttotal]
-                       }, index=['Refund_Count_Ratio'])
+                       #      'lifetime_total':[refundcountpercenttotal]
+                       }, index=['Refund Count Ratio'])
+
+        Chargeback_Amount = pd.DataFrame({'Past Month 6': '',
+                             'Past Month 5':'',
+                             'Past Month 4':'',
+                             'Past Month 3':'',
+                             'Past Month 2':'',
+                             'Past Month 1':'',
+                             'Current Month To Date':'',
+                             '6 month total':'',
+                        #     'lifetime_total':'',
+                       }, index=['Chargeback Amount'])
         
+        Chargeback_Amount_Ratio = pd.DataFrame({'Past Month 6': '',
+                             'Past Month 5':'',
+                             'Past Month 4':'',
+                             'Past Month 3':'',
+                             'Past Month 2':'',
+                             'Past Month 1':'',
+                             'Current Month To Date':'',
+                             '6 month total':'',
+                        #     'lifetime_total':'',
+                       }, index=['Chargeback Amount Ratio'])
 
-        dflastersresults = pd.concat([dfsalesvolume, dfsalescount, dfrefundamount, dfrefundcount, dfavgsalescount, dfhighesttrans,dfrefundamountpercent, dfrefundpercentcount], axis=0)
+        Chargeback_Count = pd.DataFrame({'Past Month 6': '',
+                             'Past Month 5':'',
+                             'Past Month 4':'',
+                             'Past Month 3':'',
+                             'Past Month 2':'',
+                             'Past Month 1':'',
+                             'Current Month To Date':'',
+                             '6 month total':'',
+                        #     'lifetime_total':'',
+                       }, index=['Chargeback Count'])
+        
+        Chargeback_Count_Ratio = pd.DataFrame({'Past Month 6': '',
+                             'Past Month 5':'',
+                             'Past Month 4':'',
+                             'Past Month 3':'',
+                             'Past Month 2':'',
+                             'Past Month 1':'',
+                             'Current Month To Date':'',
+                             '6 month total':'',
+                       #      'lifetime_total':'',
+                       }, index=['Chargeback Count Ratio'])
+        
+        format_mapping_dollars = {'Past Month 6': '${:,.2f}',
+                             'Past Month 5': '${:,.2f}',
+                             'Past Month 4': '${:,.2f}',
+                             'Past Month 3': '${:,.2f}',
+                             'Past Month 2': '${:,.2f}',
+                             'Past Month 1': '${:,.2f}',
+                             'Current Month To Date': '${:,.2f}',
+                             '6 month total':'${:,.2f}'}
 
+        for key, value in format_mapping_dollars.items():
+            dfsalesvolume[key] = dfsalesvolume[key].apply(value.format)
+            dfrefundamount[key] = dfrefundamount[key].apply(value.format)
+            dfavgsalescount[key] = dfavgsalescount[key].apply(value.format)
+            dfhighesttrans[key] = dfhighesttrans[key].apply(value.format)
+
+        format_mapping_percent = {'Past Month 6': '{:.2%}',
+                             'Past Month 5': '{:.2%}',
+                             'Past Month 4': '{:.2%}',
+                             'Past Month 3': '{:.2%}',
+                             'Past Month 2': '{:.2%}',
+                             'Past Month 1': '{:.2%}',
+                             'Current Month To Date': '{:.2%}',
+                             '6 month total':'{:.2%}'}
+
+        for key, value in format_mapping_dollars.items():
+            dfrefundamountpercent[key] = dfrefundamountpercent[key].apply(value.format)
+            dfrefundpercentcount[key] = dfrefundpercentcount[key].apply(value.format)    
+
+        dflastersresults = pd.concat([dfsalesvolume, dfsalescount, Chargeback_Amount, Chargeback_Amount_Ratio, Chargeback_Count, Chargeback_Count_Ratio, dfrefundamount, dfrefundamountpercent, dfrefundcount, dfrefundpercentcount, dfavgsalescount, dfhighesttrans ], axis=0)
 
         dfcalc = pd.DataFrame({'Refunds for past 90 days':[refund90],
                         '90 day volume':[volume90],
@@ -450,6 +519,12 @@ def download_df():
             dfcalc[key] = dfcalc[key].apply(value.format)
 
         df4['total'] = df4['total'].apply('${:,.0f}'.format)
+
+        #month change into automatic
+
+
+
+
 
 
         objects_to_download = {
