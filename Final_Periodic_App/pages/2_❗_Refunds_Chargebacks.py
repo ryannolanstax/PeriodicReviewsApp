@@ -521,11 +521,16 @@ def download_df():
         df4['total'] = df4['total'].apply('${:,.0f}'.format)
 
         #month change into automatic
-
-
-
-
-
+        new_column_names = {
+        'Past Month 6': (date.today() - timedelta(days=30 * 6)).strftime("%B %Y"),
+        'Past Month 5': (date.today() - timedelta(days=30 * 5)).strftime("%B %Y"),
+        'Past Month 4': (date.today() - timedelta(days=30 * 4)).strftime("%B %Y"),
+        'Past Month 3': (date.today() - timedelta(days=30 * 3)).strftime("%B %Y"),
+        'Past Month 2': (date.today() - timedelta(days=30 * 2)).strftime("%B %Y"),
+        'Past Month 1': (date.today() - timedelta(days=30 * 1)).strftime("%B %Y"),
+        'Current Month To Date': (date.today() - timedelta(days=30 * 0)).strftime("%B %Y")}
+        
+        dflastersresults.rename(columns=new_column_names, inplace=True)
 
         objects_to_download = {
             "Clean_Data": df4,
