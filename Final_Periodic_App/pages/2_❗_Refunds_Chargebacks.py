@@ -182,20 +182,28 @@ def download_df():
         refundtotal = np.sum(refund['total'])
 
         refundCurrentMonth = np.absolute(np.sum(refund[refund['created_at'] >= CurrentMonth]['total']))
+        refundCurrentMonth = np.absolute(refundCurrentMonth)
 
         refundPastMonth = np.absolute(np.sum(refund[refund['created_at'] >= PastMonth]['total'])) - refundCurrentMonth
+        refundPastMonth = np.absolute(refundPastMonth)
 
         refundPastMonth2 = np.absolute(np.sum(refund[refund['created_at'] >= PastMonth2]['total'])) - refundCurrentMonth - refundPastMonth
+        refundPastMonth2 = np.absolute(refundPastMonth2)
 
         refundPastMonth3 = np.absolute(np.sum(refund[refund['created_at'] >= PastMonth3]['total'])) - refundCurrentMonth - refundPastMonth - refundPastMonth2
+        refundPastMonth3 = np.absolute(refundPastMonth3)
 
         refundPastMonth4 = np.absolute(np.sum(refund[refund['created_at'] >= PastMonth4]['total'])) - refundCurrentMonth - refundPastMonth - refundPastMonth2 - refundPastMonth3
+        refundPastMonth4 = np.absolute(refundPastMonth4)
 
         refundPastMonth5 = np.absolute(np.sum(refund[refund['created_at'] >= PastMonth5]['total'])) - refundCurrentMonth - refundPastMonth - refundPastMonth2 - refundPastMonth3 - refundPastMonth4
+        refundPastMonth5 = np.absolute(refundPastMonth5)
 
         refundPastMonth6 = np.absolute(np.sum(refund[refund['created_at'] >= PastMonth6]['total'])) - refundCurrentMonth - refundPastMonth - refundPastMonth2 - refundPastMonth3 - refundPastMonth4 - refundPastMonth5
+        refundPastMonth6 = np.absolute(refundPastMonth6)
 
-        refundtotalPastMonth6 = np.absolute(np.sum(refund[refund['created_at'] >= PastMonth6]['total']))
+        refundtotalPastMonth6 = refundCurrentMonth + refundPastMonth + refundPastMonth2 + refundPastMonth3 + refundPastMonth4 + refundPastMonth5 + refundPastMonth6
+        refundtotalPastMonth6 = np.absolute(refundtotalPastMonth6)
 
         dfrefundamount = pd.DataFrame({'Past Month 6':[refundPastMonth6],
                                     'Past Month 5':[refundPastMonth5],
