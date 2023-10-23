@@ -5,8 +5,10 @@ import base64
 import json
 import numpy as np
 import datetime
-from datetime import date, timedelta
+from datetime import date, timedelta #, datetime
 import io
+
+#https://www.youtube.com/watch?v=uCqqGsEsIL4
 
 st.set_page_config(page_title="Refunds_Chargebacks", page_icon="❗")
 
@@ -33,6 +35,52 @@ def download_button(objects_to_download, download_filename):
                     # Convert other objects to a DataFrame and write as a sheet
                     df = pd.DataFrame({"Data": [object_to_download]})
                     df.to_excel(excel_writer, sheet_name=sheet_name)
+
+        #https://www.youtube.com/watch?v=uCqqGsEsIL4
+        #https://github.com/hnawaz007/pythondataanalysis/blob/main/AutomateExcelReports/XlsxWriter%20Enhaced%20Output%20Fix/EhancedOutputFix.ipynb
+
+        workbook = excel_writer.book     
+        worksheet = excel_writer.sheets['History']  
+
+
+
+      #  cell_format = workbook.add_format({'bg_color': 'yellow'})
+      #  column_index = 8
+       # for row in range(1, 13):  # Assuming the data starts from row 2
+       #     worksheet.write(row, column_index, None, cell_format)
+
+
+        header_format = workbook.add_format({
+        "valign": "vcenter",
+        "align": "center",
+        "bold": True,
+        })
+
+
+    
+   #     cell_format = workbook.add_format({'bg_color': 'yellow'})
+   #     column_index = 8
+
+
+
+#Doesn't work either
+
+  #      header_text = ['Legal Name', 'DBA', 'Partner', 'MID']
+   #     for i, text in enumerate(header_text):
+    #        worksheet.write(i, 0, text)
+
+#add above
+
+   # Legal Name
+   # DBA
+    #Partner
+    #MID
+ 
+
+
+        #light blue 3 for Totals
+
+        #worksheet.autofit() NOT WORKING
 
         # Seek to the beginning of the in-memory stream
         output.seek(0)
@@ -307,6 +355,65 @@ def download_df():
                             #        'lifetime_total':[highesttran]
                             }, index=['Highest Transaction'])
         
+
+        #add in amount of highesttran, groupby high ticket?
+
+        highticketcountCurrentMonth = np.count_nonzero((volume['created_at'] >= CurrentMonth) & (volume['total'] == highesttranCurrentMonth))
+
+        highticketcountPastMonth = np.count_nonzero((volume['created_at'] >= PastMonth) & (volume['created_at'] < CurrentMonth) & (volume['total'] == highesttranPastMonth))
+
+        highticketcountPastMonth2 = np.count_nonzero((volume['created_at'] >= PastMonth2) & (volume['created_at'] < PastMonth) & (volume['total'] == highesttranPastMonth2))
+
+        highticketcountPastMonth3 = np.count_nonzero((volume['created_at'] >= PastMonth3) & (volume['created_at'] < PastMonth2) & (volume['total'] == highesttranPastMonth3))
+
+        highticketcountPastMonth4 = np.count_nonzero((volume['created_at'] >= PastMonth4) & (volume['created_at'] < PastMonth3) & (volume['total'] == highesttranPastMonth4))
+
+        highticketcountPastMonth5 = np.count_nonzero((volume['created_at'] >= PastMonth5) & (volume['created_at'] < PastMonth4) & (volume['total'] == highesttranPastMonth5))
+
+        highticketcountPastMonth6 = np.count_nonzero((volume['created_at'] >= PastMonth6) & (volume['created_at'] < PastMonth5) & (volume['total'] == highesttranPastMonth6))
+
+        highticketcounttotalPastMonth6 = np.count_nonzero((volume['created_at'] >= PastMonth6) & (volume['total'] == highesttrantotalPastMonth6))
+
+        dfhighesttranscount = pd.DataFrame({'Past Month 6':[highticketcountPastMonth6],
+                                    'Past Month 5':[highticketcountPastMonth5],
+                                    'Past Month 4':[highticketcountPastMonth4],
+                                    'Past Month 3':[highticketcountPastMonth3],
+                                    'Past Month 2':[highticketcountPastMonth2],
+                                    'Past Month 1':[highticketcountPastMonth],
+                                    'Current Month To Date':[highticketcountCurrentMonth],
+                                    '6 month total':[highticketcounttotalPastMonth6],
+        }, index=['Highest Transaction Count'])
+
+
+        #add in 20% range of highest tran
+
+
+        highticketcount20PercentLowerCurrentMonth = np.count_nonzero((volume['created_at'] >= CurrentMonth) & (volume['total'] >= highesttranCurrentMonth * 0.8))
+
+        highticketcount20PercentLowerPastMonth = np.count_nonzero((volume['created_at'] >= PastMonth) & (volume['created_at'] < CurrentMonth) & (volume['total'] >= highesttranPastMonth * 0.8))
+
+        highticketcount20PercentLowerPastMonth2 = np.count_nonzero((volume['created_at'] >= PastMonth2) & (volume['created_at'] < PastMonth) & (volume['total'] >= highesttranPastMonth2 * 0.8))
+
+        highticketcount20PercentLowerPastMonth3 = np.count_nonzero((volume['created_at'] >= PastMonth3) & (volume['created_at'] < PastMonth2) & (volume['total'] >= highesttranPastMonth3 * 0.8))
+
+        highticketcount20PercentLowerPastMonth4 = np.count_nonzero((volume['created_at'] >= PastMonth4) & (volume['created_at'] < PastMonth3) & (volume['total'] >= highesttranPastMonth4 * 0.8))
+
+        highticketcount20PercentLowerPastMonth5 = np.count_nonzero((volume['created_at'] >= PastMonth5) & (volume['created_at'] < PastMonth4) & (volume['total'] >= highesttranPastMonth5 * 0.8))
+
+        highticketcount20PercentLowerPastMonth6 = np.count_nonzero((volume['created_at'] >= PastMonth6) & (volume['created_at'] < PastMonth5) & (volume['total'] >= highesttranPastMonth6 * 0.8))
+
+        highticketcount20PercentLowertotalPastMonth6 = np.count_nonzero((volume['created_at'] >= PastMonth6) & (volume['total'] >= highesttrantotalPastMonth6 * 0.8))
+
+        dfhighesttranscount20percent = pd.DataFrame({'Past Month 6':[highticketcount20PercentLowerPastMonth6],
+                                    'Past Month 5':[highticketcount20PercentLowerPastMonth5],
+                                    'Past Month 4':[highticketcount20PercentLowerPastMonth4],
+                                    'Past Month 3':[highticketcount20PercentLowerPastMonth3],
+                                    'Past Month 2':[highticketcount20PercentLowerPastMonth2],
+                                    'Past Month 1':[highticketcount20PercentLowerPastMonth],
+                                    'Current Month To Date':[highticketcount20PercentLowerCurrentMonth],
+                                    '6 month total':[highticketcount20PercentLowertotalPastMonth6],
+        }, index=['Highest Transaction Count 20% Percent Range'])     
+        
         if volumePastMonth6 > 0: 
             refundamountmonth6 = (refundPastMonth6 / volumePastMonth6)
         else: 
@@ -491,7 +598,7 @@ def download_df():
             dfrefundamountpercent[key] = dfrefundamountpercent[key].apply(value.format)
             dfrefundpercentcount[key] = dfrefundpercentcount[key].apply(value.format)    
 
-        dflastersresults = pd.concat([dfsalesvolume, dfsalescount, Chargeback_Amount, Chargeback_Amount_Ratio, Chargeback_Count, Chargeback_Count_Ratio, dfrefundamount, dfrefundamountpercent, dfrefundcount, dfrefundpercentcount, dfavgsalescount, dfhighesttrans ], axis=0)
+        dflastersresults = pd.concat([dfsalesvolume, dfsalescount, Chargeback_Amount, Chargeback_Amount_Ratio, Chargeback_Count, Chargeback_Count_Ratio, dfrefundamount, dfrefundamountpercent, dfrefundcount, dfrefundpercentcount, dfavgsalescount, dfhighesttrans, dfhighesttranscount, dfhighesttranscount20percent], axis=0)
 
         dfcalc = pd.DataFrame({'Refunds for past 90 days':[refund90],
                         '90 day volume':[volume90],
@@ -529,6 +636,9 @@ def download_df():
         df4['total'] = df4['total'].apply('${:,.0f}'.format)
 
         #month change into automatic
+        #column_names = [(current_date - timedelta(days=30 * i)).strftime("%B") for i in range(6)]
+        #data = {name: [random.randint(1, 100) for _ in range(10)] for name in column_names}
+
         new_column_names = {
         'Past Month 6': (date.today() - timedelta(days=30 * 6)).strftime("%B %Y"),
         'Past Month 5': (date.today() - timedelta(days=30 * 5)).strftime("%B %Y"),
