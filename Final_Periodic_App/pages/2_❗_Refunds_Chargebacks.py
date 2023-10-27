@@ -115,6 +115,13 @@ def download_df():
         dfbaddates['created_at'] = dfbaddates['created_at'].dt.strftime('%m/%d/%y')
         df.loc[df['created_at'].str.split(expand=True)[1].isna() == False, 'created_at'] = df2['created_at'].str.split(expand=True)[0].str.strip()
         newdf = pd.concat([df2, dfbaddates])
+
+        def custom_datetime_parser(x):
+        # Split the datetime string into date and time parts
+            date_part, time_part = x.split()
+        # Parse the date part as a date and the time part as a custom time representation
+            return pd.to_datetime(date_part) + pd.Timedelta(hours=int(time_part.split(':')[0]))
+        
         newdf['created_at'] = pd.to_datetime(newdf['created_at']).dt.date
         newdf2 = newdf.query("success == 1")
         df3 = newdf2.query("payment_method == 'card' | payment_method == 'bank'")
