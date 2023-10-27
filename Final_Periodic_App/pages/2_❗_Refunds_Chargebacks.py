@@ -121,6 +121,8 @@ def download_df():
             date_part, time_part = x.split()
         # Parse the date part as a date and the time part as a custom time representation
             return pd.to_datetime(date_part) + pd.Timedelta(hours=int(time_part.split(':')[0]))
+
+        newdf['created_at'] = newdf['created_at'].apply(custom_datetime_parser)
         
         newdf['created_at'] = pd.to_datetime(newdf['created_at']).dt.date
         newdf2 = newdf.query("success == 1")
