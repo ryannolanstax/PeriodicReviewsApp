@@ -1,3 +1,4 @@
+# code to run test python3 -m streamlit run Final_Periodic_App/Welcome.py
 import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
@@ -36,19 +37,8 @@ def download_button(objects_to_download, download_filename):
                     df = pd.DataFrame({"Data": [object_to_download]})
                     df.to_excel(excel_writer, sheet_name=sheet_name)
 
-        #https://www.youtube.com/watch?v=uCqqGsEsIL4
-        #https://github.com/hnawaz007/pythondataanalysis/blob/main/AutomateExcelReports/XlsxWriter%20Enhaced%20Output%20Fix/EhancedOutputFix.ipynb
-
         workbook = excel_writer.book     
         worksheet = excel_writer.sheets['History']  
-
-
-
-      #  cell_format = workbook.add_format({'bg_color': 'yellow'})
-      #  column_index = 8
-       # for row in range(1, 13):  # Assuming the data starts from row 2
-       #     worksheet.write(row, column_index, None, cell_format)
-
 
         header_format = workbook.add_format({
         "valign": "vcenter",
@@ -56,31 +46,6 @@ def download_button(objects_to_download, download_filename):
         "bold": True,
         })
 
-
-    
-   #     cell_format = workbook.add_format({'bg_color': 'yellow'})
-   #     column_index = 8
-
-
-
-#Doesn't work either
-
-  #      header_text = ['Legal Name', 'DBA', 'Partner', 'MID']
-   #     for i, text in enumerate(header_text):
-    #        worksheet.write(i, 0, text)
-
-#add above
-
-   # Legal Name
-   # DBA
-    #Partner
-    #MID
- 
-
-
-        #light blue 3 for Totals
-
-        #worksheet.autofit() NOT WORKING
 
         # Seek to the beginning of the in-memory stream
         output.seek(0)
@@ -117,10 +82,15 @@ def download_df():
         newdf = pd.concat([df2, dfbaddates])
 
         def custom_datetime_parser(x):
+        # Check if the datetime string contains a space
+            if ' ' in x:
         # Split the datetime string into date and time parts
-            date_part, time_part = x.split()
+                date_part, time_part = x.split()
         # Parse the date part as a date and the time part as a custom time representation
-            return pd.to_datetime(date_part) + pd.Timedelta(hours=int(time_part.split(':')[0]))
+                return pd.to_datetime(date_part) + pd.Timedelta(hours=int(time_part.split(':')[0]))
+            else:
+        # Handle the case where there is no space in the datetime string
+                return pd.to_datetime(x)
 
         newdf['created_at'] = newdf['created_at'].apply(custom_datetime_parser)
         
