@@ -133,8 +133,10 @@ def download_df():
         d = date.today()
         var_names = ["CurrentMonth", "PastMonth", "PastMonth2", "PastMonth3", "PastMonth4", "PastMonth5", "PastMonth6"]
         count = 0
+        
         for name in var_names:
-            month, year = (d.month-count, d.year) if d.month != 1 else (12, d.year-1)
+            month, year = (d.month - count, d.year) if d.month > count else (12 - (count - d.month), d.year - 1)
+            month = month if month >= 1 else month + 12  # Adjust negative month value
             globals()[name] = d.replace(day=1, month=month, year=year)
             count += 1
 
