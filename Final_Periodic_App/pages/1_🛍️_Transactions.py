@@ -57,8 +57,6 @@ def download_df():
         uploaded_data_read = [pd.read_csv(file) for file in uploaded_files]
         dfpreclean = pd.concat(uploaded_data_read)
 
-        
-
         highticketval = highticketstring
 
         dfprecleanv1 = dfpreclean.query("success == 1")
@@ -71,8 +69,8 @@ def download_df():
         dfpreclean4["memo"].fillna("blank", inplace = True)
         dfpreclean4["payment_note"].fillna("blank", inplace = True)
         
-        df = dfpreclean4.loc[:,['type', 'created_at', 'total', 'payment_person_name', 'customer_firstname', 'customer_lastname',\
-            'payment_last_four', 'last_four', 'payment_method', 'channel', 'memo', 'payment_note', 'reference', \
+        df = dfpreclean4.loc[:,['memo', 'payment_note', 'type', 'created_at', 'total', 'payment_person_name', 'customer_firstname', 'customer_lastname',\
+            'payment_last_four', 'last_four', 'payment_method', 'channel', 'reference', \
             'issuer_auth_code', 'payment_card_type', 'payment_card_exp', 'payment_bank_name', 'payment_bank_type',\
             'payment_bank_holder_type', 'billing_address_1', 'billing_address_2','billing_address_city', \
             'billing_address_state', 'billing_address_zip', 'customer_company','customer_email', 'customer_phone', \
@@ -85,6 +83,7 @@ def download_df():
         totalsum = np.sum(df['total'])
 
         total_transactions = df['type'].count()
+        total_transactions_month = total_transactions / 12
         mean_transaction = np.mean(df['total'])
         median_transaction = np.median(df['total'])
         max_transaction = np.max(df['total'])
@@ -111,6 +110,7 @@ def download_df():
                             'median_transaction':[median_transaction], 
                             'max_transaction':[max_transaction],
                             'total_transactions':[total_transactions],
+                            'total_transactions_month':[total_transactions_month],
                             'total_unique_customer_names':[total_unique_customer_names],                      
                             'avg_transactions_count_per_customer_name':[avg_transactions_count_per_customer_name],
                             'avg_transactions_sum_per_customer_name':[avg_transactions_sum_per_customer_name],
@@ -124,6 +124,7 @@ def download_df():
                         "median_transaction": '${:,.2f}',
                         "max_transaction": '${:,.2f}',
                         "total_transactions": '{:,.0f}', 
+                        "total_transactions_month": '{:,.2f}',
                         "total_unique_customer_names": '{:,.0f}',
                         "avg_transactions_count_per_customer_name": '{:,.2f}',
                         "avg_transactions_sum_per_customer_name": '${:,.2f}',                  
