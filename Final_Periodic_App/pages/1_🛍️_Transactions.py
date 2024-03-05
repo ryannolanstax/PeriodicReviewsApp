@@ -68,9 +68,9 @@ def download_df():
         dfpreclean4["channel"].fillna("blank", inplace = True)
         dfpreclean4["memo"].fillna("blank", inplace = True)
         dfpreclean4["payment_note"].fillna("blank", inplace = True)
-        
-        df = dfpreclean4.loc[:,['memo', 'payment_note', 'type', 'created_at', 'total', 'payment_person_name', 'customer_firstname', 'customer_lastname',\
-            'payment_last_four', 'last_four', 'payment_method', 'channel', 'reference', \
+
+      df = dfpreclean4.loc[:,['created_at', 'total', 'payment_person_name', 'customer_firstname', 'customer_lastname',\
+            'payment_last_four', 'payment_method', 'memo', 'payment_note', 'type', 'last_four', 'channel', 'reference', \
             'issuer_auth_code', 'payment_card_type', 'payment_card_exp', 'payment_bank_name', 'payment_bank_type',\
             'payment_bank_holder_type', 'billing_address_1', 'billing_address_2','billing_address_city', \
             'billing_address_state', 'billing_address_zip', 'customer_company','customer_email', 'customer_phone', \
@@ -79,7 +79,7 @@ def download_df():
             'customer_updated_at', 'customer_deleted_at', 'gateway_id', 'gateway_name', 'gateway_type', \
             'gateway_created_at', 'gateway_deleted_at', 'user_name', 'system_admin', 'user_created_at',\
             'user_updated_at', 'user_deleted_at']]
-    
+
         totalsum = np.sum(df['total'])
 
         total_transactions = df['type'].count()
@@ -324,12 +324,12 @@ def download_df():
         objects_to_download = {
             "Clean_Data": df,
             "High_Ticket": highticket,
+            "Dup_Trans": dup5,
             "Calculations": dfcalc,
             "Negative_Memo": memofinal,
             "Flagged_Payment_Notes": payment_note_final,
             "Flagged_Names": namefinal3,
             "Chanel_Pivot": pivottablechannel,
-            "Dup_Trans": dup5,
             "Names_Pivot": pivottablenames,
             "Last_Four_Pivot": pivottablelastfour,
 
