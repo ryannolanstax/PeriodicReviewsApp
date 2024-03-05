@@ -69,16 +69,16 @@ def download_df():
         dfpreclean4["memo"].fillna("blank", inplace = True)
         dfpreclean4["payment_note"].fillna("blank", inplace = True)
 
-      df = dfpreclean4.loc[:,['created_at', 'total', 'payment_person_name', 'customer_firstname', 'customer_lastname',\
-            'payment_last_four', 'payment_method', 'memo', 'payment_note', 'type', 'last_four', 'channel', 'reference', \
-            'issuer_auth_code', 'payment_card_type', 'payment_card_exp', 'payment_bank_name', 'payment_bank_type',\
-            'payment_bank_holder_type', 'billing_address_1', 'billing_address_2','billing_address_city', \
-            'billing_address_state', 'billing_address_zip', 'customer_company','customer_email', 'customer_phone', \
-            'customer_address_1','customer_address_2', 'customer_address_city', 'customer_address_state', \
-            'customer_address_zip', 'customer_notes', 'customer_reference', 'customer_created_at', \
-            'customer_updated_at', 'customer_deleted_at', 'gateway_id', 'gateway_name', 'gateway_type', \
-            'gateway_created_at', 'gateway_deleted_at', 'user_name', 'system_admin', 'user_created_at',\
-            'user_updated_at', 'user_deleted_at']]
+        df = dfpreclean4.loc[:,['created_at', 'total', 'payment_person_name', 'customer_firstname', 'customer_lastname',\
+                'payment_last_four', 'payment_method', 'memo', 'payment_note', 'type', 'last_four', 'channel', 'reference', \
+                'issuer_auth_code', 'payment_card_type', 'payment_card_exp', 'payment_bank_name', 'payment_bank_type',\
+                'payment_bank_holder_type', 'billing_address_1', 'billing_address_2','billing_address_city', \
+                'billing_address_state', 'billing_address_zip', 'customer_company','customer_email', 'customer_phone', \
+                'customer_address_1','customer_address_2', 'customer_address_city', 'customer_address_state', \
+                'customer_address_zip', 'customer_notes', 'customer_reference', 'customer_created_at', \
+                'customer_updated_at', 'customer_deleted_at', 'gateway_id', 'gateway_name', 'gateway_type', \
+                'gateway_created_at', 'gateway_deleted_at', 'user_name', 'system_admin', 'user_created_at',\
+                'user_updated_at', 'user_deleted_at']]
 
         totalsum = np.sum(df['total'])
 
