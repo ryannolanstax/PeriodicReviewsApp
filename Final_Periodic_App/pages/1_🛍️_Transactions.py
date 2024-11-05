@@ -105,32 +105,34 @@ def download_df():
         avg_transactions_count_per_customer_last_four = np.mean(dfgrouplastfour['tran_count'])
         avg_transactions_sum_per_customer_last_four = np.mean(dfgrouplastfour['tran_sum'])
 
-        dfcalc = pd.DataFrame({'totalsum':[totalsum],
+        dfcalc = pd.DataFrame({
+                       #     'totalsum':[totalsum],
                             'mean_transaction':[mean_transaction],
-                            'median_transaction':[median_transaction], 
+                       #     'median_transaction':[median_transaction], 
                             'max_transaction':[max_transaction],
                             'total_transactions':[total_transactions],
-                            'total_transactions_month':[total_transactions_month],
-                            'total_unique_customer_names':[total_unique_customer_names],                      
-                            'avg_transactions_count_per_customer_name':[avg_transactions_count_per_customer_name],
-                            'avg_transactions_sum_per_customer_name':[avg_transactions_sum_per_customer_name],
+                            'total_unique_customer_names':[total_unique_customer_names], 
                             'total_unique_customer_last_four':[total_unique_customer_last_four],
+                            'total_transactions_month':[total_transactions_month],                                                
+                            'avg_transactions_count_per_customer_name':[avg_transactions_count_per_customer_name],
+                        #    'avg_transactions_sum_per_customer_name':[avg_transactions_sum_per_customer_name],
                             'avg_transactions_count_per_customer_last_four':[avg_transactions_count_per_customer_last_four],
-                            'avg_transactions_sum_per_customer_last_four':[avg_transactions_sum_per_customer_last_four]
+                        #    'avg_transactions_sum_per_customer_last_four':[avg_transactions_sum_per_customer_last_four]
                             })
 
-        format_mapping = {"totalsum": '${:,.2f}',
+        format_mapping = {
+                        #"totalsum": '${:,.2f}',
                         "mean_transaction": '${:,.2f}',
-                        "median_transaction": '${:,.2f}',
+                     #   "median_transaction": '${:,.2f}',
                         "max_transaction": '${:,.2f}',
                         "total_transactions": '{:,.0f}', 
-                        "total_transactions_month": '{:,.2f}',
                         "total_unique_customer_names": '{:,.0f}',
-                        "avg_transactions_count_per_customer_name": '{:,.2f}',
-                        "avg_transactions_sum_per_customer_name": '${:,.2f}',                  
                         "total_unique_customer_last_four": '{:,.0f}',
+                        "total_transactions_month": '{:,.2f}',                
+                        "avg_transactions_count_per_customer_name": '{:,.2f}',
+                    #    "avg_transactions_sum_per_customer_name": '${:,.2f}',                                 
                         "avg_transactions_count_per_customer_last_four": '{:,.2f}',
-                        "avg_transactions_sum_per_customer_last_four": '${:,.2f}' 
+                   #     "avg_transactions_sum_per_customer_last_four": '${:,.2f}' 
                         }
 
         for key, value in format_mapping.items():
@@ -323,16 +325,15 @@ def download_df():
 
         objects_to_download = {
             "Clean_Data": df,
-            "High_Ticket": highticket,
-            "Dup_Trans": dup5,
             "Calculations": dfcalc,
+            "Dup_Trans": dup5,
+            "High_Ticket": highticket,         
             "Negative_Memo": memofinal,
             "Flagged_Payment_Notes": payment_note_final,
             "Flagged_Names": namefinal3,
             "Chanel_Pivot": pivottablechannel,
             "Names_Pivot": pivottablenames,
             "Last_Four_Pivot": pivottablelastfour,
-
         }
 
         download_link = download_button(objects_to_download, st.session_state.filename)
