@@ -122,6 +122,13 @@ def download_df():
         cardtotal = np.sum(cardonly['total'])
         card180days = np.sum(cardonly[cardonly['created_at'] > days180]['total'])
 
+        ###########################################################
+        achonly = df3.query("type == 'charge' & payment_method == 'bank'")
+        achtotal = np.sum(achonly['total'])
+        ach180days = np.sum(achonly[achonly['created_at'] > days180]['total'])
+
+
+
         Lifetime_refund_rate = (refundtotal / volumetotal)
         day90_refund_rate = (refund90/volume90)
         Lifetime_chargeback_rate = (chargebackslifetime / cardtotal)
@@ -140,69 +147,107 @@ def download_df():
             globals()[name] = d.replace(day=1, month=month, year=year)
             count += 1
 
-        volume = df3.query("type == 'charge'")
 
-        volumetotal = np.sum(volume['total'])
+        #CARD ONLY VOL
+        volume_card = df3.query("type == 'charge' & payment_method == 'card'")
+        volume_card_total = np.sum(volume_card['total'])
+        volume_card_CurrentMonth = np.sum(volume_card[volume_card['created_at'] >= CurrentMonth]['total'])
+        volume_card_PastMonth = np.sum(volume_card[volume_card['created_at'] >= PastMonth]['total']) - volume_card_CurrentMonth
+        volume_card_PastMonth2 = np.sum(volume_card[volume_card['created_at'] >= PastMonth2]['total']) - volume_card_CurrentMonth - volume_card_PastMonth
+        volume_card_PastMonth3 = np.sum(volume_card[volume_card['created_at'] >= PastMonth3]['total']) - volume_card_CurrentMonth - volume_card_PastMonth - volume_card_PastMonth2
+        volume_card_PastMonth4 = np.sum(volume_card[volume_card['created_at'] >= PastMonth4]['total']) - volume_card_CurrentMonth - volume_card_PastMonth - volume_card_PastMonth2 - volume_card_PastMonth3
+        volume_card_PastMonth5 = np.sum(volume_card[volume_card['created_at'] >= PastMonth5]['total']) - volume_card_CurrentMonth - volume_card_PastMonth - volume_card_PastMonth2 - volume_card_PastMonth3 - volume_card_PastMonth4
+        volume_card_PastMonth6 = np.sum(volume_card[volume_card['created_at'] >= PastMonth6]['total']) - volume_card_CurrentMonth - volume_card_PastMonth - volume_card_PastMonth2 - volume_card_PastMonth3 - volume_card_PastMonth4 - volume_card_PastMonth5
+        volume_card_6monthtotal = np.sum(volume_card[volume_card['created_at'] >= PastMonth6]['total'])
 
-        volumeCurrentMonth = np.sum(volume[volume['created_at'] >= CurrentMonth]['total'])
-
-        volumePastMonth = np.sum(volume[volume['created_at'] >= PastMonth]['total']) - volumeCurrentMonth
-
-        volumePastMonth2 = np.sum(volume[volume['created_at'] >= PastMonth2]['total']) - volumeCurrentMonth - volumePastMonth
-
-        volumePastMonth3 = np.sum(volume[volume['created_at'] >= PastMonth3]['total']) - volumeCurrentMonth - volumePastMonth - volumePastMonth2
-
-        volumePastMonth4 = np.sum(volume[volume['created_at'] >= PastMonth4]['total']) - volumeCurrentMonth - volumePastMonth - volumePastMonth2 - volumePastMonth3
-
-        volumePastMonth5 = np.sum(volume[volume['created_at'] >= PastMonth5]['total']) - volumeCurrentMonth - volumePastMonth - volumePastMonth2 - volumePastMonth3 - volumePastMonth4
-
-        volumePastMonth6 = np.sum(volume[volume['created_at'] >= PastMonth6]['total']) - volumeCurrentMonth - volumePastMonth - volumePastMonth2 - volumePastMonth3 - volumePastMonth4 - volumePastMonth5
-
-        volume6monthtotal = np.sum(volume[volume['created_at'] >= PastMonth6]['total'])
-
-        dfsalesvolume = pd.DataFrame({'Past Month 6':[volumePastMonth6],
-                                    'Past Month 5':[volumePastMonth5],
-                                    'Past Month 4':[volumePastMonth4],
-                                    'Past Month 3':[volumePastMonth3],
-                                    'Past Month 2':[volumePastMonth2],
-                                    'Past Month 1':[volumePastMonth],
-                                    'Current Month To Date':[volumeCurrentMonth],
-                                    '6 month total':[volume6monthtotal],
+        dfsalesvolume = pd.DataFrame({'Past Month 6':[volume_card_PastMonth6],
+                                    'Past Month 5':[volume_card_PastMonth5],
+                                    'Past Month 4':[volume_card_PastMonth4],
+                                    'Past Month 3':[volume_card_PastMonth3],
+                                    'Past Month 2':[volume_card_PastMonth2],
+                                    'Past Month 1':[volume_card_PastMonth],
+                                    'Current Month To Date':[volume_card_CurrentMonth],
+                                    '6 month total':[volume_card_6monthtotal],
                             #        'lifetime_total':[volumetotal]
-                            }, index=['Sales Amount'])
+                            }, index=['Card Sales Amount'])
 
-        volumecounttotal = np.count_nonzero(volume['total'])
+        card_counttotal = np.count_nonzero(volume_card['total'])
+        card_countCurrentMonth = np.count_nonzero(volume_card[volume_card['created_at'] >= CurrentMonth]['total'])
+        card_countPastMonth = np.count_nonzero(volume_card[volume_card['created_at'] >= PastMonth]['total']) - card_countCurrentMonth
+        card_countPastMonth2 = np.count_nonzero(volume_card[volume_card['created_at'] >= PastMonth2]['total']) - card_countCurrentMonth - card_countPastMonth
+        card_countPastMonth3 = np.count_nonzero(volume_card[volume_card['created_at'] >= PastMonth3]['total']) - card_countCurrentMonth - card_countPastMonth - card_countPastMonth2
+        card_countPastMonth4 = np.count_nonzero(volume_card[volume_card['created_at'] >= PastMonth4]['total']) - card_countCurrentMonth - card_countPastMonth - card_countPastMonth2 - card_countPastMonth3
+        card_countPastMonth5 = np.count_nonzero(volume_card[volume_card['created_at'] >= PastMonth5]['total']) - card_countCurrentMonth - card_countPastMonth - card_countPastMonth2 - card_countPastMonth3 - card_countPastMonth4
+        card_countPastMonth6 = np.count_nonzero(volume_card[volume_card['created_at'] >= PastMonth6]['total']) - card_countCurrentMonth - card_countPastMonth - card_countPastMonth2 - card_countPastMonth3 - card_countPastMonth4 - card_countPastMonth5
+        card_counttotalPastMonth6 = np.count_nonzero(volume_card[volume_card['created_at'] >= PastMonth6]['total'])
 
-        countCurrentMonth = np.count_nonzero(volume[volume['created_at'] >= CurrentMonth]['total'])
-
-        countPastMonth = np.count_nonzero(volume[volume['created_at'] >= PastMonth]['total']) - countCurrentMonth
-
-        countPastMonth2 = np.count_nonzero(volume[volume['created_at'] >= PastMonth2]['total']) - countCurrentMonth - countPastMonth
-
-        countPastMonth3 = np.count_nonzero(volume[volume['created_at'] >= PastMonth3]['total']) - countCurrentMonth - countPastMonth - countPastMonth2
-
-        countPastMonth4 = np.count_nonzero(volume[volume['created_at'] >= PastMonth4]['total']) - countCurrentMonth - countPastMonth - countPastMonth2 - countPastMonth3
-
-        countPastMonth5 = np.count_nonzero(volume[volume['created_at'] >= PastMonth5]['total']) - countCurrentMonth - countPastMonth - countPastMonth2 - countPastMonth3 - countPastMonth4
-
-        countPastMonth6 = np.count_nonzero(volume[volume['created_at'] >= PastMonth6]['total']) - countCurrentMonth - countPastMonth - countPastMonth2 - countPastMonth3 - countPastMonth4 - countPastMonth5
-
-        counttotalPastMonth6 = np.count_nonzero(volume[volume['created_at'] >= PastMonth6]['total'])
-
-        dfsalescount = pd.DataFrame({'Past Month 6':[countPastMonth6],
-                                    'Past Month 5':[countPastMonth5],
-                                    'Past Month 4':[countPastMonth4],
-                                    'Past Month 3':[countPastMonth3],
-                                    'Past Month 2':[countPastMonth2],
-                                    'Past Month 1':[countPastMonth],
-                                    'Current Month To Date':[countCurrentMonth],
-                                    '6 month total':[counttotalPastMonth6],
+        dfsalescount = pd.DataFrame({'Past Month 6':[card_countPastMonth6],
+                                    'Past Month 5':[card_countPastMonth5],
+                                    'Past Month 4':[card_countPastMonth4],
+                                    'Past Month 3':[card_countPastMonth3],
+                                    'Past Month 2':[card_countPastMonth2],
+                                    'Past Month 1':[card_countPastMonth],
+                                    'Current Month To Date':[card_countCurrentMonth],
+                                    '6 month total':[card_countPastMonth6],
                             #        'lifetime_total':[volumecounttotal]
-                            }, index=['Sales Count'])
+                            }, index=['Card Sales Count'])
+
 
         volume90 = np.sum(volume[volume['created_at'] > days90]['total'])
-
         volume180 = np.sum(volume[volume['created_at'] > days180]['total'])
+
+
+        #ACH Transactions
+        ach_volume = df3.query("type == 'charge' & payment_method == 'bank'")
+        ach_volumetotal = np.sum(ach_volume['total'])
+        ach_volumeCurrentMonth = np.sum(ach_volume[ach_volume['created_at'] >= CurrentMonth]['total'])
+        ach_volumePastMonth = np.sum(ach_volume[ach_volume['created_at'] >= PastMonth]['total']) - ach_volumeCurrentMonth
+        ach_volumePastMonth2 = np.sum(ach_volume[ach_volume['created_at'] >= PastMonth2]['total']) - ach_volumeCurrentMonth - ach_volumePastMonth
+        ach_volumePastMonth3 = np.sum(ach_volume[ach_volume['created_at'] >= PastMonth3]['total']) - ach_volumeCurrentMonth - ach_volumePastMonth - ach_volumePastMonth2
+        ach_volumePastMonth4 = np.sum(ach_volume[ach_volume['created_at'] >= PastMonth4]['total']) - ach_volumeCurrentMonth - ach_volumePastMonth - ach_volumePastMonth2 - ach_volumePastMonth3
+        ach_volumePastMonth5 = np.sum(ach_volume[ach_volume['created_at'] >= PastMonth5]['total']) - ach_volumeCurrentMonth - ach_volumePastMonth - ach_volumePastMonth2 - ach_volumePastMonth3 - ach_volumePastMonth4
+        ach_volumePastMonth6 = np.sum(ach_volume[ach_volume['created_at'] >= PastMonth6]['total']) - ach_volumeCurrentMonth - ach_volumePastMonth - ach_volumePastMonth2 - ach_volumePastMonth3 - ach_volumePastMonth4 - ach_volumePastMonth5
+        ach_volume6monthtotal = np.sum(ach_volume[ach_volume['created_at'] >= PastMonth6]['total'])
+
+        dfachsalesvolume = pd.DataFrame({'Past Month 6':[ach_volumePastMonth6],
+                                    'Past Month 5':[ach_volumePastMonth5],
+                                    'Past Month 4':[ach_volumePastMonth4],
+                                    'Past Month 3':[ach_volumePastMonth3],
+                                    'Past Month 2':[ach_volumePastMonth2],
+                                    'Past Month 1':[ach_volumePastMonth],
+                                    'Current Month To Date':[ach_volumeCurrentMonth],
+                                    '6 month total':[ach_volume6monthtotal],
+                            #        'lifetime_total':[volumetotal]
+                            }, index=['ACH Sales Amount'])
+
+        ach_volumecounttotal = np.count_nonzero(ach_volume['total'])
+        ach_countCurrentMonth = np.count_nonzero(ach_volume[ach_volume['created_at'] >= CurrentMonth]['total'])
+        ach_countPastMonth = np.count_nonzero(ach_volume[ach_volume['created_at'] >= PastMonth]['total']) - ach_countCurrentMonth
+        ach_countPastMonth2 = np.count_nonzero(ach_volume[ach_volume['created_at'] >= PastMonth2]['total']) - ach_countCurrentMonth - ach_countPastMonth
+        ach_countPastMonth3 = np.count_nonzero(ach_volume[ach_volume['created_at'] >= PastMonth3]['total']) - ach_countCurrentMonth - ach_countPastMonth - ach_countPastMonth2
+        ach_countPastMonth4 = np.count_nonzero(ach_volume[ach_volume['created_at'] >= PastMonth4]['total']) - ach_countCurrentMonth - ach_countPastMonth - ach_countPastMonth2 - ach_countPastMonth3
+        ach_countPastMonth5 = np.count_nonzero(ach_volume[ach_volume['created_at'] >= PastMonth5]['total']) - ach_countCurrentMonth - ach_countPastMonth - ach_countPastMonth2 - ach_countPastMonth3 - ach_countPastMonth4
+        ach_countPastMonth6 = np.count_nonzero(ach_volume[ach_volume['created_at'] >= PastMonth6]['total']) - ach_countCurrentMonth - ach_countPastMonth - ach_countPastMonth2 - ach_countPastMonth3 - ach_countPastMonth4 - ach_countPastMonth5
+        ach_counttotalPastMonth6 = np.count_nonzero(ach_volume[ach_volume['created_at'] >= PastMonth6]['total'])
+
+        dfachsalescount = pd.DataFrame({'Past Month 6':[ach_countPastMonth6],
+                                    'Past Month 5':[ach_countPastMonth5],
+                                    'Past Month 4':[ach_countPastMonth4],
+                                    'Past Month 3':[ach_countPastMonth3],
+                                    'Past Month 2':[ach_countPastMonth2],
+                                    'Past Month 1':[ach_countPastMonth],
+                                    'Current Month To Date':[ach_countCurrentMonth],
+                                    '6 month total':[ach_counttotalPastMonth6],
+                            #        'lifetime_total':[volumecounttotal]
+                            }, index=['ACH Sales Count'])
+
+
+     #   volume90 = np.sum(volume[volume['created_at'] > days90]['total'])
+     #   volume180 = np.sum(volume[volume['created_at'] > days180]['total'])
+
+
+
+
 
         #Refund Values
 
@@ -395,48 +440,54 @@ def download_df():
                                     '6 month total':[highticketcount20PercentLowertotalPastMonth6],
         }, index=['Highest Transaction Count 20% Percent Range'])     
         
-        if volumePastMonth6 > 0: 
-            refundamountmonth6 = (refundPastMonth6 / volumePastMonth6)
+
+
+
+
+
+
+        if (ach_volumePastMonth6 + volume_card_PastMonth6) > 0: 
+            refundamountmonth6 = (refundPastMonth6 / (ach_volumePastMonth6 + volume_card_PastMonth6))
         else: 
             refundamountmonth6 = 0
 
-        if volumePastMonth5 > 0: 
-            refundamountmonth5 = (refundPastMonth5 / volumePastMonth5)
+        if (ach_volumePastMonth5 + volume_card_PastMonth5) > 0: 
+            refundamountmonth5 = (refundPastMonth5 / (ach_volumePastMonth5 + volume_card_PastMonth5))
         else: 
             refundamountmonth5 = 0
 
-        if volumePastMonth4 > 0: 
-            refundamountmonth4 = (refundPastMonth4 / volumePastMonth4)
+        if (ach_volumePastMonth4 + volume_card_PastMonth4) > 0: 
+            refundamountmonth4 = (refundPastMonth4 / (ach_volumePastMonth4 + volume_card_PastMonth4))
         else: 
             refundamountmonth4 = 0
 
-        if volumePastMonth3 > 0: 
-            refundamountmonth3 = (refundPastMonth3 / volumePastMonth3)
+        if (ach_volumePastMonth3 + volume_card_PastMonth3) > 0: 
+            refundamountmonth3 = (refundPastMonth3 / (ach_volumePastMonth3 + volume_card_PastMonth3))
         else: 
             refundamountmonth3 = 0
 
-        if volumePastMonth2 > 0: 
-            refundamountmonth2 = (refundPastMonth2 / volumePastMonth2)
+        if (ach_volumePastMonth2 + volume_card_PastMonth2) > 0: 
+            refundamountmonth2 = (refundPastMonth2 / (ach_volumePastMonth2 + volume_card_PastMonth2))
         else: 
             refundamountmonth2 = 0
 
-        if volumePastMonth > 0: 
-            refundamountmonth = (refundPastMonth / volumePastMonth)
+        if (ach_volumePastMonth + volume_card_PastMonth) > 0: 
+            refundamountmonth = (refundPastMonth / (ach_volumePastMonth + volume_card_PastMonth))
         else: 
             refundamountmonth = 0
 
-        if volumeCurrentMonth > 0: 
-            refundamountcurrentmonth = (refundCurrentMonth / volumeCurrentMonth)
+        if (ach_volumeCurrentMonth + volume_card_CurrentMonth) > 0: 
+            refundamountcurrentmonth = (refundCurrentMonth / (ach_volumeCurrentMonth + volume_card_CurrentMonth))
         else: 
             refundamountcurrentmonth = 0
 
-        if volume6monthtotal > 0: 
-            refundamount6month = (refundtotalPastMonth6 / volume6monthtotal)
+        if (ach_volume6monthtotal + volume_card_6monthtotal) > 0: 
+            refundamount6month = (refundtotalPastMonth6 / (ach_volume6monthtotal + volume_card_6monthtotal))
         else: 
             refundamount6month = 0
 
-        if volumetotal > 0: 
-            refundamounttotal = (refundtotal / volumetotal)
+        if (ach_volumetotal + volume_card_total) > 0: 
+            refundamounttotal = (refundtotal / (ach_volumetotal + volume_card_total))
         else: 
             refundamounttotal = 0
 
@@ -450,51 +501,57 @@ def download_df():
                              '6 month total':[refundamount6month],
                        #      'lifetime_total':[refundamounttotal]
                        }, index=['Refund Amount Ratio'])
+
+
+
+
         
-        if countPastMonth6 > 0: 
-            refundcountpercentmonth6 = (refundCountPastMonth6 / countPastMonth6)
+        if (ach_countPastMonth6 + card_countPastMonth6) > 0: 
+            refundcountpercentmonth6 = (refundCountPastMonth6 / (ach_countPastMonth6 + card_countPastMonth6))
         else: 
             refundcountpercentmonth6 = 0
 
-        if countPastMonth5 > 0: 
-            refundcountpercentmonth5 = (refundCountPastMonth5 / countPastMonth5)
+        if (ach_countPastMonth5 + card_countPastMonth5) > 0: 
+            refundcountpercentmonth5 = (refundCountPastMonth5 / (ach_countPastMonth5 + card_countPastMonth5))
         else: 
             refundcountpercentmonth5 = 0
 
-        if countPastMonth4 > 0: 
-            refundcountpercentmonth4 = (refundCountPastMonth4 / countPastMonth4)
+        if (ach_countPastMonth4 + card_countPastMonth4) > 0: 
+            refundcountpercentmonth4 = (refundCountPastMonth4 / (ach_countPastMonth4 + card_countPastMonth4))
         else: 
             refundcountpercentmonth4 = 0
 
-        if countPastMonth3 > 0: 
-            refundcountpercentmonth3 = (refundCountPastMonth3 / countPastMonth3)
+        if (ach_countPastMonth3 + card_countPastMonth3) > 0: 
+            refundcountpercentmonth3 = (refundCountPastMonth3 / (ach_countPastMonth3 + card_countPastMonth3))
         else: 
             refundcountpercentmonth3 = 0
 
-        if countPastMonth2 > 0: 
-            refundcountpercentmonth2 = (refundCountPastMonth2 / countPastMonth2)
+        if (ach_countPastMonth2 + card_countPastMonth2) > 0: 
+            refundcountpercentmonth2 = (refundCountPastMonth2 / (ach_countPastMonth2 + card_countPastMonth2))
         else: 
             refundcountpercentmonth2 = 0
 
-        if countPastMonth > 0: 
-            refundcountpercentmonth = (refundCountPastMonth / countPastMonth)
+        if (ach_countPastMonth + card_countPastMonth) > 0: 
+            refundcountpercentmonth = (refundCountPastMonth / (ach_countPastMonth + card_countPastMonth))
         else: 
             refundcountpercentmonth = 0
 
-        if countCurrentMonth > 0: 
-            refundcountpercentcurrentmonth = (refundCountCurrentMonth / countCurrentMonth)
+        if (ach_countCurrentMonth + card_countCurrentMonth) > 0: 
+            refundcountpercentcurrentmonth = (refundCountCurrentMonth / (ach_countCurrentMonth + card_countCurrentMonth))
         else: 
             refundcountpercentcurrentmonth = 0
 
-        if volume6monthtotal > 0: 
-            refundcountpercent6month = (refundCounttotalPastMonth6 / counttotalPastMonth6)
+        if (ach_counttotalPastMonth6 + card_counttotalPastMonth6) > 0: 
+            refundcountpercent6month = (refundCounttotalPastMonth6 / (ach_counttotalPastMonth6 + card_counttotalPastMonth6))
         else: 
             refundcountpercent6month = 0
 
-        if volumecounttotal > 0: 
-            refundcountpercenttotal = (refundcounttotal / volumecounttotal)
+        if (ach_volumecounttotal + card_counttotalPastMonth6) > 0: 
+            refundcountpercenttotal = (refundcounttotal / (ach_volumecounttotal + card_counttotalPastMonth6))
         else: 
             refundcountpercenttotal = 0
+
+
 
         dfrefundpercentcount = pd.DataFrame({'Past Month 6':[refundcountpercentmonth6],
                              'Past Month 5':[refundcountpercentmonth5],
@@ -562,6 +619,7 @@ def download_df():
 
         for key, value in format_mapping_dollars.items():
             dfsalesvolume[key] = dfsalesvolume[key].apply(value.format)
+            dfachsalesvolume[key] = dfachsalesvolume[key].apply(value.format)
             dfrefundamount[key] = dfrefundamount[key].apply(value.format)
             dfavgsalescount[key] = dfavgsalescount[key].apply(value.format)
             dfhighesttrans[key] = dfhighesttrans[key].apply(value.format)
@@ -579,7 +637,9 @@ def download_df():
             dfrefundamountpercent[key] = dfrefundamountpercent[key].apply(value.format)
             dfrefundpercentcount[key] = dfrefundpercentcount[key].apply(value.format)    
 
-        dflastersresults = pd.concat([dfsalesvolume, dfsalescount, Chargeback_Amount, Chargeback_Amount_Ratio, Chargeback_Count, Chargeback_Count_Ratio, dfrefundamount, dfrefundamountpercent, dfrefundcount, dfrefundpercentcount, dfavgsalescount, dfhighesttrans, dfhighesttranscount, dfhighesttranscount20percent], axis=0)
+        dflastersresults = pd.concat([dfsalesvolume, dfsalescount, dfachsalesvolume, dfachsalescount, Chargeback_Amount, Chargeback_Amount_Ratio, Chargeback_Count, Chargeback_Count_Ratio, dfrefundamount, dfrefundamountpercent, dfrefundcount, dfrefundpercentcount, dfavgsalescount, dfhighesttrans, dfhighesttranscount, dfhighesttranscount20percent], axis=0)
+
+
 
         dfcalc = pd.DataFrame({'Refunds for past 90 days':[refund90],
                         '90 day volume':[volume90],
