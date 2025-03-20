@@ -59,7 +59,7 @@ def download_df():
 
         highticketval = highticketstring
 
-        dfprecleanv1 = dfpreclean.query("success == 1")
+        dfprecleanv1 = dfpreclean.query("success == 1 and source != 'intuit'")
 
         dfprecleanv1.drop(['id','merchant_id','user_id','customer_id','subtotal','tax','is_manual','success','donation','tip','meta','pre_auth','updated_at','source'], axis=1, inplace=True)
         dfpreclean2 = dfprecleanv1[(dfprecleanv1['type'].isna() == False) & (dfprecleanv1['total'].isna() == False)]
@@ -86,7 +86,8 @@ def download_df():
         total_transactions_month = total_transactions / 12
         mean_transaction = np.mean(df['total'])
         median_transaction = np.median(df['total'])
-        max_transaction = np.max(df['total'])
+        max_transaction_card = df.loc[df['payment_method'] == 'card', 'total'].max()
+        max_transaction_ach = df.loc[df['payment_method'] == 'bank', 'total'].max()
         total_unique_customer_last_four = df['payment_last_four'].nunique()
         total_unique_customer_names = df['payment_person_name'].nunique()
 
@@ -109,7 +110,8 @@ def download_df():
                        #     'totalsum':[totalsum],
                             'mean_transaction':[mean_transaction],
                        #     'median_transaction':[median_transaction], 
-                            'max_transaction':[max_transaction],
+                            'max_transaction_card':[max_transaction_card],
+                            'max_transaction_ach':[max_transaction_ach],
                             'total_transactions':[total_transactions],
                             'total_unique_customer_names':[total_unique_customer_names], 
                             'total_unique_customer_last_four':[total_unique_customer_last_four],
@@ -124,7 +126,8 @@ def download_df():
                         #"totalsum": '${:,.2f}',
                         "mean_transaction": '${:,.2f}',
                      #   "median_transaction": '${:,.2f}',
-                        "max_transaction": '${:,.2f}',
+                        "max_transaction_card": '${:,.2f}',
+                        "max_transaction_ach": '${:,.2f}',
                         "total_transactions": '{:,.0f}', 
                         "total_unique_customer_names": '{:,.0f}',
                         "total_unique_customer_last_four": '{:,.0f}',
