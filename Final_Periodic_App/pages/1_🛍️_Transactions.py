@@ -9,6 +9,9 @@ from datetime import date, timedelta
 import io
 from auth_utils import require_auth, get_user_info
 
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+
 
 st.set_page_config(page_title="Transactions", page_icon="🛍️")
 
