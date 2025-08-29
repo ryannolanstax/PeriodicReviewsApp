@@ -1,6 +1,8 @@
 import streamlit as st
 from PIL import Image
 from auth_utils import require_auth, get_user_info
+import sys
+import os
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
