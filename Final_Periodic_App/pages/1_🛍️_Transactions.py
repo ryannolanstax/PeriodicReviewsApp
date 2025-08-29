@@ -7,8 +7,14 @@ import numpy as np
 import datetime
 from datetime import date, timedelta
 import io
+from auth_utils import require_auth, get_user_info
+
 
 st.set_page_config(page_title="Transactions", page_icon="🛍️")
+
+if require_auth("Your Page Title"):
+    # Your protected page content goes here
+    user_info = get_user_info()
 
 
 def download_button(objects_to_download, download_filename):
