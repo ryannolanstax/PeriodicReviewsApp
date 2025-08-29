@@ -11,6 +11,8 @@ from datetime import date, timedelta
 import io
 import matplotlib.pyplot as plt  
 from auth_utils import require_auth, get_user_info
+import sys
+import os
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
