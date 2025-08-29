@@ -10,6 +10,9 @@ from datetime import date, timedelta #, datetime
 import io
 from auth_utils import require_auth, get_user_info
 
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+
 
 #https://www.youtube.com/watch?v=uCqqGsEsIL4
 
