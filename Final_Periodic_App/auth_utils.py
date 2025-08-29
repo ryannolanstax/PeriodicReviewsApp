@@ -34,7 +34,7 @@ def check_authentication():
         
         # Add a button to redirect to main page
         if st.button("Go to Login Page"):
-            st.switch_page("main.py")  # For Streamlit 1.29.0+
+            st.switch_page("Welcome.py")  # For Streamlit 1.29.0+
             
         # Alternative redirect method for older Streamlit versions
         # st.markdown("[Click here to login](./)")
