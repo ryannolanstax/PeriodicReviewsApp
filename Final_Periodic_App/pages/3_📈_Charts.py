@@ -10,8 +10,14 @@ import datetime
 from datetime import date, timedelta
 import io
 import matplotlib.pyplot as plt  
+from auth_utils import require_auth, get_user_info
+
 
 st.set_page_config(page_title="Charts", page_icon="📈")
+
+if require_auth("Your Page Title"):
+    # Your protected page content goes here
+    user_info = get_user_info()
 
 st.title("Chart Maker")
 
