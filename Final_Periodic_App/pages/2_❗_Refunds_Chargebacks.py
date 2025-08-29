@@ -8,10 +8,16 @@ import numpy as np
 import datetime
 from datetime import date, timedelta #, datetime
 import io
+from auth_utils import require_auth, get_user_info
+
 
 #https://www.youtube.com/watch?v=uCqqGsEsIL4
 
 st.set_page_config(page_title="Refunds_Chargebacks", page_icon="❗")
+
+if require_auth("Your Page Title"):
+    # Your protected page content goes here
+    user_info = get_user_info()
 
 def download_button(objects_to_download, download_filename):
     """
