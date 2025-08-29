@@ -14,10 +14,12 @@ from auth_utils import require_auth, get_user_info
 import sys
 import os
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 
 st.set_page_config(page_title="Charts", page_icon="📈")
+
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
 
 if require_auth("Your Page Title"):
     # Your protected page content goes here
