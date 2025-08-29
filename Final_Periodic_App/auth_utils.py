@@ -64,7 +64,7 @@ def show_logout_sidebar():
 
 def require_auth(page_title="Protected Page"):
     """Decorator-like function to protect pages"""
-    st.set_page_config(page_title=page_title, page_icon="🔒")
+    #st.set_page_config(page_title=page_title, page_icon="🔒")
     
     if check_authentication():
         show_logout_sidebar()
