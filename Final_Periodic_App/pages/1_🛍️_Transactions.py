@@ -270,7 +270,7 @@ if require_auth("Your Page Title"):
                 
             namefinal = df[(df['payment_person_name'].str.contains(namecheck, case=False))|\
                         (df['customer_lastname'].str.contains(namecheck, case=False))|\
-                        (df['customer_firstname'].str.contains(namecheck, case=False)) \
+                        (df['customer_firstname'].str.contains(namecheck, case=False))| \
                         (df['payment_person_name'].str.contains(legal_dba_check, case=False))
                         ]
     
