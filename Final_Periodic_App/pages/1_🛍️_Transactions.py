@@ -258,10 +258,20 @@ if require_auth("Your Page Title"):
     
             if len(lastname4) > 0:
                 namecheck = '|'.join([namecheck, lastname4])
+
+            # Build a separate pattern just for legal & dba
+            legal_dba_check = ""
+            if len(legal_name) > 0:
+                legal_dba_check = legal_name
+            
+            if len(dba_name) > 0:
+                legal_dba_check = '|'.join(filter(None, [legal_dba_check, dba_name]))
+
                 
             namefinal = df[(df['payment_person_name'].str.contains(namecheck, case=False))|\
                         (df['customer_lastname'].str.contains(namecheck, case=False))|\
-                        (df['customer_firstname'].str.contains(namecheck, case=False)) 
+                        (df['customer_firstname'].str.contains(namecheck, case=False)) \
+                        (df['payment_person_name'].str.contains(legal_dba_check, case=False))
                         ]
     
             namefinal2 = namefinal.loc[:,['payment_person_name', 'customer_firstname', 'customer_lastname', 'created_at', 'total', \
