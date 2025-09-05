@@ -375,6 +375,9 @@ if require_auth("Your Page Title"):
     
             firstname4 = st.text_input("Enter Owner First Name 4", key="firstname4")
             lastname4 = st.text_input("Enter Owner Last Name 4", key="lastname4")
+
+            legal_name = st.text_input("Enter Business Legal Name")
+            dba_name   = st.text_input("Enter Business DBA Name")
     
             highticketstring = st.number_input("Enter High Ticket INTEGER ONLY", key="highticket")
     
