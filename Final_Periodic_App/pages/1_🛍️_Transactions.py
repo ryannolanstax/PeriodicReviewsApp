@@ -10,6 +10,7 @@ import io
 from auth_utils import require_auth, get_user_info
 import sys
 import os
+import re
 
 
 
@@ -239,41 +240,34 @@ if require_auth("Your Page Title"):
     
             #Re-order columns as follows:  payment_person name, created_at, total, last_four, type channel, memo, payment_note, reference, no preference to order for remaining columns.
     
-            namecheck = '{}|{}'.format(firstname1,lastname1)   
+            name_parts = []
+            if firstname1: name_parts.append(firstname1)
+            if lastname1: name_parts.append(lastname1)
+            if firstname2: name_parts.append(firstname2)
+            if lastname2: name_parts.append(lastname2)
+            if firstname3: name_parts.append(firstname3)
+            if lastname3: name_parts.append(lastname3)
+            if firstname4: name_parts.append(firstname4)
+            if lastname4: name_parts.append(lastname4)
+            if bizname1: name_parts.append(bizname1)
+            if bizname2: name_parts.append(bizname2)
     
-            if len(firstname2) > 0:
-                namecheck = '|'.join([namecheck, firstname2])
     
-            if len(lastname2) > 0:
-                namecheck = '|'.join([namecheck, lastname2])
+            # escape them for regex safety
+            escaped_parts = [re.escape(part) for part in name_parts if part.strip() != ""]
+            if escaped_parts:
+                name_pattern = "|".join(escaped_parts)
+            else:
+                name_pattern = "$^"  # matches nothing if nothing entered
     
-            if len(firstname3) > 0:
-                namecheck = '|'.join([namecheck, firstname3])
-    
-            if len(lastname3) > 0:
-                namecheck = '|'.join([namecheck, lastname3])
-    
-            if len(firstname4) > 0:
-                namecheck = '|'.join([namecheck, firstname4])
-    
-            if len(lastname4) > 0:
-                namecheck = '|'.join([namecheck, lastname4])
+            # apply filter across multiple columns
+            namefinal = df[
+                df['payment_person_name'].str.contains(name_pattern, case=False, na=False) |
+                df['customer_lastname'].str.contains(name_pattern, case=False, na=False) |
+                df['customer_firstname'].str.contains(name_pattern, case=False, na=False) |
+                df['customer_company'].str.contains(name_pattern, case=False, na=False)
+            ]
 
-            # Build a separate pattern just for legal & dba
-            legal_dba_check = ""
-            if len(legal_name) > 0:
-                legal_dba_check = legal_name
-            
-            if len(dba_name) > 0:
-                legal_dba_check = '|'.join(filter(None, [legal_dba_check, dba_name]))
-
-                
-            namefinal = df[(df['payment_person_name'].str.contains(namecheck, case=False))|\
-                        (df['customer_lastname'].str.contains(namecheck, case=False))|\
-                        (df['customer_firstname'].str.contains(namecheck, case=False))| \
-                        (df['payment_person_name'].str.contains(legal_dba_check, case=False))
-                        ]
-    
             namefinal2 = namefinal.loc[:,['payment_person_name', 'customer_firstname', 'customer_lastname', 'created_at', 'total', \
                         'payment_last_four', 'last_four', 'type', 'channel', 'memo', 'payment_note', 'reference', \
                         'payment_method', 'issuer_auth_code', 'payment_card_type', 'payment_card_exp', 'payment_bank_name', \
@@ -386,8 +380,9 @@ if require_auth("Your Page Title"):
             firstname4 = st.text_input("Enter Owner First Name 4", key="firstname4")
             lastname4 = st.text_input("Enter Owner Last Name 4", key="lastname4")
 
-            legal_name = st.text_input("Enter Business Legal Name")
-            dba_name   = st.text_input("Enter Business DBA Name")
+            st.write('No Need to put llc or extra details in biz name')
+            bizname1 = st.text_input("Enter Business Name", key="businessname1")
+            bizname2 = st.text_input("Enter Business Name Variant", key="businessname2")
     
             highticketstring = st.number_input("Enter High Ticket INTEGER ONLY", key="highticket")
     
